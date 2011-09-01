@@ -1,12 +1,12 @@
 Summary:	DLNA server software
 Summary(pl.UTF-8):	DLNA server software
 Name:		minidlna
-Version:	1.0.20
+Version:	1.0.22
 Release:	0.1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://downloads.sourceforge.net/minidlna/%{name}_%{version}_src.tar.gz
-# Source0-md5:	1c5230cc6dec7592eca4c63c526eadb7
+# Source0-md5:	3de2f6b54f43bb998dfad3c8fa75cef3
 URL:		http://sourceforge.net/projects/minidlna/
 BuildRequires:	ffmpeg-devel
 BuildRequires:	flac-devel
