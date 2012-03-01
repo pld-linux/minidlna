@@ -1,12 +1,12 @@
 Summary:	DLNA server software
 Summary(pl.UTF-8):	DLNA server software
 Name:		minidlna
-Version:	1.0.22
+Version:	1.0.24
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://downloads.sourceforge.net/minidlna/%{name}_%{version}_src.tar.gz
-# Source0-md5:	3de2f6b54f43bb998dfad3c8fa75cef3
+# Source0-md5:	be9b4c91e3fcde592dc3f9828098ca0f
 Source1:	%{name}.init
 URL:		http://sourceforge.net/projects/minidlna/
 BuildRequires:	ffmpeg-devel
@@ -45,6 +45,9 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/rc.d/init.d
 
 %{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
+
+%{__make} install-conf \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
