@@ -2,7 +2,7 @@ Summary:	DLNA server software
 Summary(pl.UTF-8):	DLNA server software
 Name:		minidlna
 Version:	1.0.25
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://downloads.sourceforge.net/minidlna/%{name}_%{version}_src.tar.gz
@@ -37,7 +37,7 @@ fully compliant with DLNA/UPnP-AV clients.
 sed -i -e 's#-O3#$(OPTFLAGS)#g' Makefile
 
 %build
-%{__make} \
+%{__make} -j1 \
 	CC="%{__cc}" \
 	OPTFLAGS="%{rpmcflags} %{rpmcppflags}"
 
@@ -46,10 +46,10 @@ rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/etc/rc.d/init.d
 
-%{__make} install \
+%{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__make} install-conf \
+%{__make} -j1 install-conf \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
