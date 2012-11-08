@@ -1,0 +1,155 @@
+diff -uNrp minidlna-1.0.25/genconfig.sh minidlna-1.0.25-/genconfig.sh
+--- minidlna-1.0.25/genconfig.sh	2012-01-20 16:34:13.000000000 -0800
++++ minidlna-1.0.25-/genconfig.sh	2012-11-04 22:52:44.317032470 -0800
+@@ -161,6 +161,47 @@ echo "#define OS_VERSION		\"$OS_NAME/$OS
+ echo "#define OS_URL			\"${OS_URL}\"" >> ${CONFIGFILE}
+ echo "" >> ${CONFIGFILE}
+ 
++if [ -e "/usr/include/libavutil/avutil.h" ]; then
++	echo "#define HAVE_LIBAVUTIL_AVUTIL_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/ffmpeg/avutil.h" ]; then
++	echo "#define HAVE_FFMPEG_AVUTIL_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/ffmpeg/libavutil/avutil.h" ]; then
++	echo "#define HAVE_FFMPEG_LIBAVUTIL_AVUTIL_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/libav/libavutil/avutil.h" ]; then
++	echo "#define HAVE_LIBAV_LIBAVUTIL_AVUTIL_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/libav/avutil.h" ]; then
++	echo "#define HAVE_LIBAV_AVUTIL_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/avutil.h" ]; then
++	echo "#define HAVE_AVUTIL_H 1" >> ${CONFIGFILE}
++fi
++if [ -e "/usr/include/libavformat/avformat.h" ]; then
++	echo "#define HAVE_LIBAVFORMAT_AVFORMAT_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/ffmpeg/avformat.h" ]; then
++	echo "#define HAVE_FFMPEG_AVFORMAT_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/ffmpeg/libavformat/avformat.h" ]; then
++	echo "#define HAVE_FFMPEG_LIBAVFORMAT_AVFORMAT_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/libav/libavformat/avformat.h" ]; then
++	echo "#define HAVE_LIBAV_LIBAVFORMAT_AVFORMAT_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/libav/avformat.h" ]; then
++	echo "#define HAVE_LIBAV_AVFORMAT_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/avformat.h" ]; then
++	echo "#define HAVE_AVFORMAT_H 1" >> ${CONFIGFILE}
++fi
++if [ -e "/usr/include/libavcodec/avcodec.h" ]; then
++	echo "#define HAVE_LIBAVCODEC_AVCODEC_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/ffmpeg/avcodec.h" ]; then
++	echo "#define HAVE_FFMPEG_AVCODEC_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/ffmpeg/libavcodec/avcodec.h" ]; then
++	echo "#define HAVE_FFMPEG_LIBAVCODEC_AVCODEC_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/libav/libavcodec/avcodec" ]; then
++	echo "#define HAVE_LIBAV_LIBAVCODEC_AVCODEC_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/libav/avcodec.h" ]; then
++	echo "#define HAVE_LIBAV_AVCODEC_H 1" >> ${CONFIGFILE}
++elif [ -e "/usr/include/avcodec.h" ]; then
++	echo "#define HAVE_AVCODEC_H 1" >> ${CONFIGFILE}
++fi
++echo >> ${CONFIGFILE}
++
+ echo "/* full path of the file database */" >> ${CONFIGFILE}
+ echo "#define DEFAULT_DB_PATH		\"${DB_PATH}\"" >> ${CONFIGFILE}
+ echo "" >> ${CONFIGFILE}
+diff -uNrp minidlna-1.0.25/libav.h minidlna-1.0.25-/libav.h
+--- minidlna-1.0.25/libav.h	1969-12-31 16:00:00.000000000 -0800
++++ minidlna-1.0.25-/libav.h	2012-11-04 22:46:41.785045064 -0800
+@@ -0,0 +1,41 @@
++#if HAVE_FFMPEG_LIBAVUTIL_AVUTIL_H
++#include <ffmpeg/libavutil/avutil.h>
++#elif HAVE_LIBAV_LIBAVUTIL_AVUTIL_H
++#include <libav/libavutil/avutil.h>
++#elif HAVE_LIBAVUTIL_AVUTIL_H
++#include <libavutil/avutil.h>
++#elif HAVE_FFMPEG_AVUTIL_H
++#include <ffmpeg/avutil.h>
++#elif HAVE_LIBAV_AVUTIL_H
++#include <libav/avutil.h>
++#elif HAVE_AVUTIL_H
++#include <avutil.h>
++#endif
++
++#if HAVE_FFMPEG_LIBAVCODEC_AVCODEC_H
++#include <ffmpeg/libavcodec/avcodec.h>
++#elif HAVE_LIBAV_LIBAVCODEC_AVCODEC_H
++#include <libav/libavcodec/avcodec.h>
++#elif HAVE_LIBAVCODEC_AVCODEC_H
++#include <libavcodec/avcodec.h>
++#elif HAVE_FFMPEG_AVCODEC_H
++#include <ffmpeg/avcodec.h>
++#elif HAVE_LIBAV_AVCODEC_H
++#include <libav/avcodec.h>
++#elif HAVE_AVCODEC_H
++#include <avcodec.h>
++#endif
++
++#if HAVE_FFMPEG_LIBAVFORMAT_AVFORMAT_H
++#include <ffmpeg/libavformat/avformat.h>
++#elif HAVE_LIBAV_LIBAVFORMAT_AVFORMAT_H
++#include <libav/libavformat/avformat.h>
++#elif HAVE_LIBAVFORMAT_AVFORMAT_H
++#include <libavformat/avformat.h>
++#elif HAVE_FFMPEG_AVFORMAT_H
++#include <ffmpeg/avformat.h>
++#elif HAVE_LIBAV_LIBAVFORMAT_H
++#include <libav/avformat.h>
++#elif HAVE_AVFORMAT_H
++#include <avformat.h>
++#endif
+diff -uNrp minidlna-1.0.25/Makefile minidlna-1.0.25-/Makefile
+--- minidlna-1.0.25/Makefile	2012-01-17 14:49:01.000000000 -0800
++++ minidlna-1.0.25-/Makefile	2012-11-04 22:42:27.685054133 -0800
+@@ -12,10 +12,7 @@
+ #
+ #CFLAGS = -Wall -O -D_GNU_SOURCE -g -DDEBUG
+ #CFLAGS = -Wall -g -Os -D_GNU_SOURCE
+-CFLAGS = -Wall -g -O3 -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 \
+-	 -I/usr/include/ffmpeg \
+-	 -I/usr/include/libavutil -I/usr/include/libavcodec -I/usr/include/libavformat \
+-	 -I/usr/include/ffmpeg/libavutil -I/usr/include/ffmpeg/libavcodec -I/usr/include/ffmpeg/libavformat
++CFLAGS = -Wall -g -O3 -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64
+ #STATIC_LINKING: CFLAGS += -DSTATIC
+ #STATIC_LINKING: LDFLAGS = -static
+ CC = gcc
+@@ -129,7 +126,5 @@ log.o: log.h
+ 
+ .c.o:
+ 	@echo Compiling $*.c
+-	@$(CC) $(CFLAGS) -o $@ -c $< && exit 0;\
+-		echo "The following command failed:" 1>&2;\
+-		echo "$(CC) $(CFLAGS) -o $@ -c $<";\
+-		$(CC) $(CFLAGS) -o $@ -c $< &>/dev/null
++	@$(CC) $(CFLAGS) -o $@ -c $< && exit 0; \
++		echo "The following command failed:  $(CC) $(CFLAGS) -o $@ -c $<" && false
+diff -uNrp minidlna-1.0.25/metadata.c minidlna-1.0.25-/metadata.c
+--- minidlna-1.0.25/metadata.c	2012-06-29 14:11:29.000000000 -0700
++++ minidlna-1.0.25-/metadata.c	2012-11-04 22:45:44.621047405 -0800
+@@ -15,6 +15,7 @@
+  * You should have received a copy of the GNU General Public License
+  * along with MiniDLNA. If not, see <http://www.gnu.org/licenses/>.
+  */
++#include "config.h"
+ #include <stdio.h>
+ #include <ctype.h>
+ #include <string.h>
+@@ -30,9 +31,7 @@
+ #include "image_utils.h"
+ #include <jpeglib.h>
+ #include <setjmp.h>
+-#include <avutil.h>
+-#include <avcodec.h>
+-#include <avformat.h>
++#include "libav.h"
+ #include "tagutils/tagutils.h"
+ 
+ #include "upnpglobalvars.h"
+diff -uNrp minidlna-1.0.25/tagutils/tagutils-plist.c minidlna-1.0.25-/tagutils/tagutils-plist.c
+--- minidlna-1.0.25/tagutils/tagutils-plist.c	2012-01-17 14:54:47.000000000 -0800
++++ minidlna-1.0.25-/tagutils/tagutils-plist.c	2012-11-04 22:53:11.081032268 -0800
+@@ -27,7 +27,7 @@
+ #include "misc.h"
+ #include "tagutils.h"
+ #include "textutils.h"
+-#include "log.h"
++#include "../log.h"
+ 
+ 
+ #define MAX_BUF 4096

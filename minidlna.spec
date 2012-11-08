@@ -1,13 +1,14 @@
 Summary:	DLNA server software
 Summary(pl.UTF-8):	DLNA server software
 Name:		minidlna
-Version:	1.0.24
+Version:	1.0.25
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://downloads.sourceforge.net/minidlna/%{name}_%{version}_src.tar.gz
-# Source0-md5:	be9b4c91e3fcde592dc3f9828098ca0f
+# Source0-md5:	d966256baf2f9b068b9de871ab5dade5
 Source1:	%{name}.init
+Patch0:		%{name}-ffmpeg10.patch
 URL:		http://sourceforge.net/projects/minidlna/
 BuildRequires:	ffmpeg-devel
 BuildRequires:	flac-devel
@@ -32,6 +33,7 @@ fully compliant with DLNA/UPnP-AV clients.
 
 %prep
 %setup -q
+%patch0 -p1
 sed -i -e 's#-O3#$(OPTFLAGS)#g' Makefile
 
 %build
