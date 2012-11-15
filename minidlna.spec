@@ -44,6 +44,9 @@ którego celem jest pełna zgodność z klientami DLNA/UPnP-AV.
 
 %{__sed} -i -e 's#-g -O3#$(OPTFLAGS)#g' Makefile
 
+# Verbose Makefile
+sed -i 's/@$(CC)/$(CC)/' Makefile
+
 %build
 %{__make} -j1 \
 	CC="%{__cc}" \
