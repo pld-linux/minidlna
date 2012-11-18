@@ -33,7 +33,7 @@ fi
 # Get service config - may override defaults
 [ -f /etc/sysconfig/minidlna ] && . /etc/sysconfig/minidlna
 
-pidfile="/var/run/minidlna.pid"
+pidfile="/var/run/minidlna/minidlna.pid"
 
 
 start() {
@@ -44,7 +44,7 @@ start() {
 	fi
 
 	msg_starting "minidlna"
-	daemon /usr/sbin/minidlna 
+	daemon --user minidlna /usr/sbin/minidlna -P $pidfile -f /etc/minidlna.conf
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/minidlna
 }

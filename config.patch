@@ -1,0 +1,22 @@
+--- minidlna-1.0.25/minidlna.conf.wiget	2012-11-18 11:12:19.015994831 +0100
++++ minidlna-1.0.25/minidlna.conf	2012-11-18 11:19:02.359311611 +0100
+@@ -11,16 +11,16 @@ port=8200
+ #   + "A" for audio  (eg. media_dir=A,/home/jmaggard/Music)
+ #   + "V" for video  (eg. media_dir=V,/home/jmaggard/Videos)
+ #   + "P" for images (eg. media_dir=P,/home/jmaggard/Pictures)
+-media_dir=/opt
++#media_dir=/opt
+ 
+ # set this if you want to customize the name that shows up on your clients
+ #friendly_name=My DLNA Server
+ 
+ # set this if you would like to specify the directory where you want MiniDLNA to store its database and album art cache
+-#db_dir=/var/cache/minidlna
++db_dir=/var/cache/minidlna
+ 
+ # set this if you would like to specify the directory where you want MiniDLNA to store its log file
+-#log_dir=/var/log
++log_dir=/var/log/minidlna
+ 
+ # set this to change the verbosity of the information that is logged
+ # each section can use a different level: off, fatal, error, warn, info, or debug
