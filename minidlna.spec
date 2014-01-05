@@ -13,17 +13,14 @@ Source0:	http://downloads.sourceforge.net/minidlna/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.service
 Source3:	%{name}.tmpfiles
-# https://gitorious.org/debian-pkg/minidlna/blobs/raw/master/debian/minidlna.1
-Source4:	%{name}.1
-# https://gitorious.org/debian-pkg/minidlna/blobs/raw/master/debian/minidlna.conf.5
-Source5:	%{name}.conf.5
-Patch0:		%{name}-ffmpeg10.patch
-Patch1:		config.patch
+Patch0:		config.patch
 URL:		http://sourceforge.net/projects/minidlna/
+BuildRequires:	autoconf >= 2.50
+BuildRequires:	automake
 # libavcodec libavformat libavutil
 BuildRequires:	ffmpeg-devel
 BuildRequires:	flac-devel
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-devel >= 0.18
 BuildRequires:	libexif-devel
 BuildRequires:	libid3tag-devel
 BuildRequires:	libjpeg-devel
@@ -45,45 +42,41 @@ którego celem jest pełna zgodność z klientami DLNA/UPnP-AV.
 
 %prep
 %setup -q
-#%patch0 -p1
-%patch1 -p1
+%patch0 -p1
 
 %build
-%{__libtoolize}
 %{__aclocal}
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-%configure
+%configure \
+	--disable-silent-rules
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/etc/rc.d/init.d,%{_mandir}/man{1,5}} \
+install -d $RPM_BUILD_ROOT{/etc/rc.d/init.d,%{_mandir}/man{5,8}} \
 	$RPM_BUILD_ROOT{%{systemdtmpfilesdir},%{systemdunitdir}} \
 	$RPM_BUILD_ROOT/var/{log,run,cache}/%{name}
 
-%{__make} -j1 install \
+%{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# not installed by make install: config file
 cp -p %{name}.conf $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.conf
+# and man pages
+cp -p *.5 $RPM_BUILD_ROOT%{_mandir}/man5
+cp -p *.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
 cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{systemdunitdir}/%{name}.service
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
-# Install man pages
-install %{SOURCE4} $RPM_BUILD_ROOT%{_mandir}/man1/
-install %{SOURCE5} $RPM_BUILD_ROOT%{_mandir}/man5/
-
-for f in po/*.po ; do
-	lang=$(basename $f .po)
-	install -d $RPM_BUILD_ROOT%{_localedir}/${lang}/LC_MESSAGES
-	msgfmt -v -o $RPM_BUILD_ROOT%{_localedir}/${lang}/LC_MESSAGES/minidlna.mo $f
-done
-
 %find_lang %{name}
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %pre
 %groupadd -g 284 minidlna
@@ -110,12 +103,9 @@ fi
 %triggerpostun -- %{name} < 1.0.25-3
 %systemd_trigger %{name}.service
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc LICENCE.miniupnpd NEWS README TODO
+%doc AUTHORS LICENCE.miniupnpd NEWS README TODO
 %attr(754,root,root) /etc/rc.d/init.d/minidlna
 %attr(640,root,minidlna) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/minidlna.conf
 %attr(755,root,root) %{_sbindir}/minidlnad
@@ -124,5 +114,5 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr(755,minidlna,minidlna) /var/run/%{name}
 %dir %attr(755,minidlna,minidlna) /var/cache/%{name}
 %dir %attr(755,minidlna,minidlna) /var/log/%{name}
-%{_mandir}/man1/*
-%{_mandir}/man5/*
+%{_mandir}/man5/minidlna.conf.5*
+%{_mandir}/man8/minidlnad.8*
