@@ -1,9 +1,9 @@
 --- minidlna-1.0.25/minidlna.conf.wiget	2012-11-18 11:12:19.015994831 +0100
 +++ minidlna-1.0.25/minidlna.conf	2012-11-18 11:19:02.359311611 +0100
-@@ -11,16 +11,16 @@ port=8200
- #   + "A" for audio  (eg. media_dir=A,/home/jmaggard/Music)
+@@ -15,16 +15,16 @@
  #   + "V" for video  (eg. media_dir=V,/home/jmaggard/Videos)
  #   + "P" for images (eg. media_dir=P,/home/jmaggard/Pictures)
+ #   + "PV" for pictures and video (eg. media_dir=AV,/home/jmaggard/digital_camera)
 -media_dir=/opt
 +#media_dir=/opt
  

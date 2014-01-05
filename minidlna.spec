@@ -4,12 +4,12 @@
 Summary:	DLNA server software
 Summary(pl.UTF-8):	Oprogramowanie serwerowe DLNA
 Name:		minidlna
-Version:	1.0.25
-Release:	6
+Version:	1.1.1
+Release:	1
 License:	GPL v2
 Group:		Networking/Daemons
-Source0:	http://downloads.sourceforge.net/minidlna/%{name}_%{version}_src.tar.gz
-# Source0-md5:	d966256baf2f9b068b9de871ab5dade5
+Source0:	http://downloads.sourceforge.net/minidlna/%{name}-%{version}.tar.gz
+# Source0-md5:	653405555ac3f8eb4aacc54c1be7b5fa
 Source1:	%{name}.init
 Source2:	%{name}.service
 Source3:	%{name}.tmpfiles
@@ -45,18 +45,18 @@ którego celem jest pełna zgodność z klientami DLNA/UPnP-AV.
 
 %prep
 %setup -q
-%patch0 -p1
+#%patch0 -p1
 %patch1 -p1
 
-%{__sed} -i -e 's#-g -O3#$(OPTFLAGS)#g' Makefile
-
-# Verbose Makefile
-sed -i 's/@$(CC)/$(CC)/' Makefile
-
 %build
-%{__make} -j1 \
-	CC="%{__cc}" \
-	OPTFLAGS="%{rpmcflags} %{rpmcppflags}"
+%{__libtoolize}
+%{__aclocal}
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+%configure
+
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -67,8 +67,7 @@ install -d $RPM_BUILD_ROOT{/etc/rc.d/init.d,%{_mandir}/man{1,5}} \
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__make} -j1 install-conf \
-	DESTDIR=$RPM_BUILD_ROOT
+cp -p %{name}.conf $RPM_BUILD_ROOT%{_sysconfdir}/%{name}.conf
 
 cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{systemdunitdir}/%{name}.service
@@ -119,7 +118,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENCE.miniupnpd NEWS README TODO
 %attr(754,root,root) /etc/rc.d/init.d/minidlna
 %attr(640,root,minidlna) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/minidlna.conf
-%attr(755,root,root) %{_sbindir}/minidlna
+%attr(755,root,root) %{_sbindir}/minidlnad
 %{systemdtmpfilesdir}/%{name}.conf
 %{systemdunitdir}/%{name}.service
 %dir %attr(755,minidlna,minidlna) /var/run/%{name}

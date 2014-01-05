@@ -7,7 +7,7 @@
 # description:	MiniDLNA (aka ReadyDLNA) is server software with the aim of being
 #		fully compliant with DLNA/UPnP-AV clients.
 #
-# processname:	minidlna
+# processname:	minidlnad
 # config:	/etc/minidlna.conf
 # pidfile:	/var/run/minidlna.pid
 #
@@ -44,7 +44,7 @@ start() {
 	fi
 
 	msg_starting "minidlna"
-	daemon --user minidlna /usr/sbin/minidlna -P $pidfile -f /etc/minidlna.conf
+	daemon --user minidlna /usr/sbin/minidlnad -P $pidfile -f /etc/minidlna.conf
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/minidlna
 }
@@ -57,7 +57,7 @@ stop() {
 
 	# Stop daemons.
 	msg_stopping "minidlna"
-	killproc minidlna
+	killproc minidlnad
 	rm -f /var/lock/subsys/minidlna
 }
 
@@ -94,7 +94,7 @@ case "$1" in
 	condrestart 7
 	;;
   status)
-	status minidlna
+	status minidlnad
 	RETVAL=$?
 	;;
   *)
