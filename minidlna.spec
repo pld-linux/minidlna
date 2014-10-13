@@ -4,12 +4,12 @@
 Summary:	DLNA server software
 Summary(pl.UTF-8):	Oprogramowanie serwerowe DLNA
 Name:		minidlna
-Version:	1.1.1
-Release:	2
+Version:	1.1.4
+Release:	1
 License:	GPL v2
 Group:		Networking/Daemons
 Source0:	http://downloads.sourceforge.net/minidlna/%{name}-%{version}.tar.gz
-# Source0-md5:	653405555ac3f8eb4aacc54c1be7b5fa
+# Source0-md5:	67c9e91285bc3801fd91a5d26ea775d7
 Source1:	%{name}.init
 Source2:	%{name}.service
 Source3:	%{name}.tmpfiles
@@ -45,6 +45,7 @@ którego celem jest pełna zgodność z klientami DLNA/UPnP-AV.
 %patch0 -p1
 
 %build
+%{__gettextize}
 %{__aclocal}
 %{__autoconf}
 %{__autoheader}

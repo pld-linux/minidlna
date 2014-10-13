@@ -1,13 +1,16 @@
---- minidlna-1.0.25/minidlna.conf.wiget	2012-11-18 11:12:19.015994831 +0100
-+++ minidlna-1.0.25/minidlna.conf	2012-11-18 11:19:02.359311611 +0100
-@@ -15,16 +15,16 @@
+diff -urN minidlna-1.1.4.org/minidlna.conf minidlna-1.1.4/minidlna.conf
+--- minidlna-1.1.4.org/minidlna.conf	2014-08-26 23:09:22.000000000 +0200
++++ minidlna-1.1.4/minidlna.conf	2014-10-13 21:49:08.792041371 +0200
+@@ -15,7 +15,7 @@
  #   + "V" for video  (eg. media_dir=V,/home/jmaggard/Videos)
  #   + "P" for images (eg. media_dir=P,/home/jmaggard/Pictures)
- #   + "PV" for pictures and video (eg. media_dir=AV,/home/jmaggard/digital_camera)
+ #   + "PV" for pictures and video (eg. media_dir=PV,/home/jmaggard/digital_camera)
 -media_dir=/opt
 +#media_dir=/opt
  
- # set this if you want to customize the name that shows up on your clients
+ # set this to merge all media_dir base contents into the root container
+ # note: the default is no
+@@ -25,10 +25,10 @@
  #friendly_name=My DLNA Server
  
  # set this if you would like to specify the directory where you want MiniDLNA to store its database and album art cache
