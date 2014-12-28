@@ -20,7 +20,7 @@ BuildRequires:	automake
 # libavcodec libavformat libavutil
 BuildRequires:	ffmpeg-devel
 BuildRequires:	flac-devel
-BuildRequires:	gettext-devel >= 0.18
+BuildRequires:	gettext-tools >= 0.18
 BuildRequires:	libexif-devel
 BuildRequires:	libid3tag-devel
 BuildRequires:	libjpeg-devel
