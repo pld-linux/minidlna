@@ -50,6 +50,7 @@ którego celem jest pełna zgodność z klientami DLNA/UPnP-AV.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
+export CFLAGS="%{rpmcflags} -fcommon"
 %configure \
 	--disable-silent-rules
 
