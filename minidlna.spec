@@ -5,7 +5,7 @@ Summary:	DLNA server software
 Summary(pl.UTF-8):	Oprogramowanie serwerowe DLNA
 Name:		minidlna
 Version:	1.3.3
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Networking/Daemons
 Source0:	http://downloads.sourceforge.net/minidlna/%{name}-%{version}.tar.gz
@@ -30,6 +30,8 @@ BuildRequires:	rpmbuild(macros) >= 1.228
 BuildRequires:	sed >= 4.0
 BuildRequires:	sqlite3-devel >= 3.5.1
 Requires(post,preun):	/sbin/chkconfig
+Provides:	group(minidlna)
+Provides:	user(minidlna)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -90,15 +92,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %preun
 if [ "$1" = "0" ]; then
-        %service -q %{name} stop
-        /sbin/chkconfig --del %{name}
+	%service -q %{name} stop
+	/sbin/chkconfig --del %{name}
 fi
 %systemd_preun %{name}.service
 
 %postun
 if [ "$1" = "0" ]; then
-        %userremove minidlna
-        %groupremove minidlna
+	%userremove minidlna
+	%groupremove minidlna
 fi
 %systemd_reload
 
